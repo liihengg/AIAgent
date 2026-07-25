@@ -5,7 +5,6 @@ LotteryService/
 # Codely CLI 自动生成（与子项目 .gitignore 保持一致）
 .codely-cli/auto-saves
 .codely-cli/skills/wechatpay-payment-integration/assets
-.codegraph
 
 # 临时/日志
 mem-log/
