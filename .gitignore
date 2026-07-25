@@ -1,0 +1,17 @@
+# 两个子项目各自有独立 Git 仓库，不在此追踪
+Lottery/
+LotteryService/
+
+# Codely CLI 自动生成（与子项目 .gitignore 保持一致）
+.codely-cli/auto-saves
+.codely-cli/skills/wechatpay-payment-integration/assets
+.codegraph
+
+# 临时/日志
+mem-log/
+.codely-cli/tool-outputs
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
