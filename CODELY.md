@@ -291,6 +291,7 @@ cd LotteryService && git status          # 后端
 
 ### Project
 - [2026-07-25 15:10:34] seed-products.json drives membership product seeding at startup (Data/ProductSeeder.cs). Products are matched by Id — existing products are updated, new ones are created. Product.Id is manually assigned (ValueGeneratedNever), not auto-increment. Seed product IDs: 高级会员 10001~10999, 企业会员 11001~11999. This allows different deployments to adjust pricing/periods by editing the JSON file without code changes or DB manual operations.
+- [2026-07-28 10:25:49] Backend time handling changed from DateTime.UtcNow to Beijing time (UTC+8) via Utils.Clock static class (Clock.Now / Clock.FromUtc). All business timestamps (CreateTime, UpdateTime, DrawTime, PayTime, ExpireTime, etc.) now store and compare in UTC+8. Exceptions kept as timezone-agnostic: JWT exp claim (TokenService.cs uses DateTime.UtcNow → Unix timestamp) and WeChat Pay signature timestamps (DateTimeOffset.UtcNow.ToUnixTimeSeconds). WeChat Pay time_expire format changed from "Z" suffix to "+08:00".
 
 ### Reference
 
