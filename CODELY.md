@@ -291,7 +291,9 @@ cd LotteryService && git status          # 后端
 
 ### Project
 - [2026-07-25 15:10:34] seed-products.json drives membership product seeding at startup (Data/ProductSeeder.cs). Products are matched by Id — existing products are updated, new ones are created. Product.Id is manually assigned (ValueGeneratedNever), not auto-increment. Seed product IDs: 高级会员 10001~10999, 企业会员 11001~11999. This allows different deployments to adjust pricing/periods by editing the JSON file without code changes or DB manual operations.
-- [2026-07-28 10:25:49] Backend time handling changed from DateTime.UtcNow to Beijing time (UTC+8) via Utils.Clock static class (Clock.Now / Clock.FromUtc). All business timestamps (CreateTime, UpdateTime, DrawTime, PayTime, ExpireTime, etc.) now store and compare in UTC+8. Exceptions kept as timezone-agnostic: JWT exp claim (TokenService.cs uses DateTime.UtcNow → Unix timestamp) and WeChat Pay signature timestamps (DateTimeOffset.UtcNow.ToUnixTimeSeconds). WeChat Pay time_expire format changed from "Z" suffix to "+08:00".
+- [2026-08-13 17:03:37] Backend time handling unified to millisecond Unix timestamps (long) via Utils.Clock static class (Clock.Now → long ms UTC). All business timestamps (CreateTime, UpdateTime, DrawTime, PayTime, ExpireTime, etc.) are long in Models, DTOs, and SQLite INTEGER columns. Clock provides: Now (long ms), ToUnixSeconds(long ms), FromUnixSeconds(long s), ToWechatExpire(long ms) → "yyyy-MM-ddTHH:mm:ss+08:00", ParseWechatTime(string) → long, TodayStartMs (Beijing midnight), Format(long) for logs. WeChat Pay and JWT exp use Clock.ToUnixSeconds internally. TimeMs static class (Utils/TimeMs.cs) provides Second/Minute/Hour/Day constants — always use these instead of hardcoded numbers like 60_000 or 86_400_000. Frontend constants.js has matching TimeMs object. util.js formatDate/formatDateTime/formatExpireText/tsToDateStr accept long ts, isMembershipExpired compares ts <= Date.now() directly. seed-products.json updateTime field changed from ISO string to millisecond number. Changed 2026-08-13.
+
+
 
 ### Reference
 
